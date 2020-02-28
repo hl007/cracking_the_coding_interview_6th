@@ -1,4 +1,4 @@
-package com.company.node;
+package com.company.linkedlist;
 
 import java.util.ArrayList;
 
