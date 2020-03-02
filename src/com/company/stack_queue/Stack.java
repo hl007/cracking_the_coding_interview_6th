@@ -39,24 +39,25 @@ public class Stack {
         return first.item;
     }
 
-    // 对栈进行排序，使得最小元素处于栈顶
+    // 对栈进行排序（栈顶为最小元素），最多用一个临时栈
     public void sortMin() {
         if(size()==0) throw new IllegalArgumentException("栈为空");
 
-        int min=first.item;
         Stack s=new Stack();  // 临时栈
+
         while(!isEmpty()) {
-            int t=pop();
-            if(t<min) min=t;
-            s.push(t);
-        }
-        while(!s.isEmpty()) {
-            int t=s.pop();
-            if(t>min) {
-                push(t);
+            int temp=pop();
+            while(!s.isEmpty() && temp<s.peek()) {
+                int a=s.pop();
+                push(a);
             }
+            s.push(temp);
         }
-        push(min);
+
+        // 将临时栈的数据复制到原栈
+        while(!s.isEmpty()) {
+            push(s.pop());
+        }
     }
 
     public static void main(String[] args) {
@@ -65,8 +66,13 @@ public class Stack {
         s.push(5);
         s.push(3);
         s.push(12);
-//        s.sortMin();
-        System.out.println(s.size());
+        s.push(4);
+        s.push(8);
+        s.push(12);
+        s.sortMin();
+        while(!s.isEmpty()) {
+            System.out.println(s.pop());
+        }
     }
 
 }

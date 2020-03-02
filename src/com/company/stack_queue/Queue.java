@@ -30,6 +30,13 @@ public class Queue<Item> {
         N--;
         return item;
     }
+
+    public Item getFirstItem() {
+        return first.item;
+    }
+
+
+
     public static void main(String[] args) {
         Queue<String> q = new Queue<>();
         q.enqueue("d");
