@@ -1,4 +1,4 @@
-package com.company.stack_queue;
+package com.company.graph;
 
 import java.util.Iterator;
 
