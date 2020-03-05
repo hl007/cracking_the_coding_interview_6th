@@ -1,6 +1,7 @@
 package com.company.graph;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
 
@@ -247,8 +248,55 @@ public class BST<Key extends Comparable<Key>,Value> implements OrderedSymbolTabl
     }
 
     // 从左向右遍历数组插入树中，可生成二叉搜索树。给定一棵二叉搜索树，输出所有能生成此树的数组
-    public int[][] arraysOfBST() {
-        return null;
+    public ArrayList<LinkedList<Key>>arraysOfBST() {
+        return getAllSequences(root);
+    }
+
+    // 获取x为根节点的所有序列
+    private ArrayList<LinkedList<Key>> getAllSequences(Node x) {
+        ArrayList<LinkedList<Key>> arr=new ArrayList<>();
+        if(x==null) {
+            arr.add(new LinkedList<>());
+            return arr;
+        }
+
+        LinkedList<Key> prefix=new LinkedList<>();
+        prefix.add(x.key);
+        ArrayList<LinkedList<Key>> leftAll=getAllSequences(x.left);  // 获取左子树所有的序列
+        ArrayList<LinkedList<Key>> rightAll=getAllSequences(x.right);  // 获取右子树所有的序列
+
+        ArrayList<LinkedList<Key>> weaveResult=new ArrayList<>();
+        for(LinkedList<Key> p:leftAll) {
+            for(LinkedList<Key> q:rightAll) {
+                weave(weaveResult,prefix,p,q);  // 进行编织
+            }
+        }
+        return weaveResult;
+    }
+
+    // 将数组first和second编织，保留其在原数组中的相对顺序
+    // {1,2,3}和{4,5,6}编织的子问题：
+    // 1添加到{2,3}和{4,5,6}编制结果的前端；
+    // 4添加到{1,2,3}和{5,6}编制结果的前端；
+    public void weave(ArrayList<LinkedList<Key>> arr,LinkedList<Key> prefix,LinkedList<Key> first,LinkedList<Key> second) {
+        if(first.size()==0 || second.size()==0) {
+            LinkedList<Key> s=(LinkedList<Key>) prefix.clone();
+            s.addAll(first);
+            s.addAll(second);
+            arr.add(s);
+            return;
+        }
+
+        // first的头部加入prefix，在递归完成后还原到first
+        Key headFirst=first.removeFirst();
+        prefix.addLast(headFirst);
+        weave(arr,prefix,first,second);
+        first.addFirst(prefix.removeLast());
+
+        Key headSecond=second.removeFirst();
+        prefix.addLast(headSecond);
+        weave(arr,prefix,first,second);
+        second.addFirst(prefix.removeLast());
     }
 
 
@@ -262,6 +310,11 @@ public class BST<Key extends Comparable<Key>,Value> implements OrderedSymbolTabl
         bst.put(1, "g");
         bst.put(9, "h");
         bst.put(0, "w");
+        ArrayList<LinkedList<Integer>> arr=bst.arraysOfBST();
+        System.out.println(arr.size());
+        for(LinkedList<Integer> s:arr) {
+            System.out.println(s);
+        }
     }
 
 }

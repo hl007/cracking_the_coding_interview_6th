@@ -1,6 +1,8 @@
 package com.company.graph;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 // 二叉树
 public class BinaryTree {
@@ -140,15 +142,68 @@ public class BinaryTree {
     }
 
     // 找出两个节点的首个共同祖先
-    public Node firstAncestor(Node x,Node y) {
-        return null;
+    public Node getFirstAncestor(Node x,Node y) {
+        if(!cover(root,x) || !cover(root,y)) {  // 如果节点不在树中，返回
+            return null;
+        }
+        return ancestorHelper(root,x,y);
     }
+
+    private Node ancestorHelper(Node root,Node x,Node y) {
+        if(root==null || root==x || root==y) {
+            return root;
+        }
+
+        boolean xIsOnLeft=cover(root.left,x);  // 节点x是否在root左边
+        boolean yIsOnLeft=cover(root.left,y);  // 节点y是否在root左边
+        if(xIsOnLeft!=yIsOnLeft) {  // x,y在root两边
+            return root;
+        }
+        else {
+            Node childdNode=xIsOnLeft?root.left:root.right;
+            return ancestorHelper(childdNode,x,y);
+        }
+    }
+
+    //断root和x是否在一条链上
+    private boolean cover(Node root,Node x) {
+        if(root==null) return false;
+        if(root==x) return true;
+
+        return cover(root.left,x) || cover(root.right,x);
+    }
+
 
     // 给定一个值，输出节点和等于该值的所有路径
-    public Queue<Node>[] paths() {
+    public LinkedList<Integer> path() {
         return null;
     }
 
+    
+    // 给定一棵几百万节点的二叉树t1，一棵几百节点的二叉树t2，判断t2是否是t1的子树
+    // 前序遍历结果相同的两棵树为同一棵树（只有一个子节点，需标记另一个空节点），
+    public boolean isSonOfAnother(Node x) {
+        StringBuilder s=new StringBuilder();
+        StringBuilder s2=new StringBuilder();
+
+        specialPreOrderTraversal(root,s);
+        specialPreOrderTraversal(x,s2);
+
+        System.out.println(s);
+        System.out.println("another: "+s2);
+        return s2.toString().contains(s.toString());  // 通过是否为子字符串判断
+    }
+
+    private void specialPreOrderTraversal(Node x,StringBuilder s) {
+        if(x==null) {
+            s.append("x");
+            return;
+        }
+
+        s.append(x.item);
+        specialPreOrderTraversal(x.left,s);
+        specialPreOrderTraversal(x.right,s);
+    }
 
     public static void main(String[] args) {
         BinaryTree bt=new BinaryTree(5);
@@ -158,13 +213,12 @@ public class BinaryTree {
         Node n5=bt.putRight(n3,18);
         Node n6=bt.putLeft(n4,12);
 
-        System.out.println(bt.isBSTByInOrderTraversal());
-//        for(Queue<Node> q:arr) {
-//            for(Node x:q) {
-//                System.out.print(x.item+"\t");
-//            }
-//            System.out.println();
-//        }
+        BinaryTree bt2=new BinaryTree(8);
+        Node n7=bt.putLeft(bt2.root,7);
+        Node n8=bt.putRight(bt2.root,18);
+        Node n9=bt.putLeft(n7,12);
+
+        System.out.println(bt2.isSonOfAnother(bt.root));
 
     }
 }
