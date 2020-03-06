@@ -212,7 +212,6 @@ public class BinaryTree {
                 sum+=y.item;
                 s.push(y);
                 if(sum==val) {
-                    System.out.println("sum: "+sum);
                     pathArr.add((Stack)s.clone());
                 }
             }
@@ -220,7 +219,6 @@ public class BinaryTree {
             sum+=y.item;
             s.push(y);
             if(sum==val) {
-                System.out.println("sum2: "+sum);
                 pathArr.add((Stack)s.clone());
             }
         }
