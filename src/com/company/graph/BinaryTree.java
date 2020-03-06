@@ -2,7 +2,9 @@ package com.company.graph;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Stack;
 
 // 二叉树
 public class BinaryTree {
@@ -175,11 +177,66 @@ public class BinaryTree {
 
 
     // 给定一个值，输出节点和等于该值的所有路径
-    public LinkedList<Integer> path() {
-        return null;
+    public ArrayList<Stack<Node>> pathsEqualValue(int val) {
+        HashMap<Node,Node> edgeTo=new HashMap<>();
+        HashMap<Node,Integer> distanceTo=new HashMap<>();  // 每个节点到根节点的距离
+
+        ArrayList<Node> arr=new ArrayList<>();
+        inOrderTraversal2(root,arr);
+
+        // 广度优先搜索
+        Queue<Node> q=new Queue<>();
+        q.enqueue(root);
+        distanceTo.put(root,0);
+        while(!q.isEmpty()) {
+            Node x=q.dequeue();
+            if(x.left!=null) {
+                distanceTo.put(x.left,distanceTo.get(x)+1);
+                edgeTo.put(x.left,x);
+                q.enqueue(x.left);
+            }
+            if(x.right!=null) {
+                distanceTo.put(x.right,distanceTo.get(x)+1);
+                edgeTo.put(x.right,x);
+                q.enqueue(x.right);
+            }
+        }
+
+        // 计算距离
+        ArrayList<Stack<Node>> pathArr=new ArrayList<>();
+        for(Node x:arr) {
+            int sum=0;
+            Stack<Node> s=new Stack<>();
+            Node y;
+            for(y=x;distanceTo.get(y)!=0;y=edgeTo.get(y)) {
+                sum+=y.item;
+                s.push(y);
+                if(sum==val) {
+                    System.out.println("sum: "+sum);
+                    pathArr.add((Stack)s.clone());
+                }
+            }
+
+            sum+=y.item;
+            s.push(y);
+            if(sum==val) {
+                System.out.println("sum2: "+sum);
+                pathArr.add((Stack)s.clone());
+            }
+        }
+
+        return pathArr;
     }
 
-    
+    // 获取该二叉树的所有节点
+    private void inOrderTraversal2(Node x,ArrayList<Node> arr) {
+        if(x==null) return;
+
+        inOrderTraversal2(x.left,arr);
+        arr.add(x);
+        inOrderTraversal2(x.right,arr);
+    }
+
     // 给定一棵几百万节点的二叉树t1，一棵几百节点的二叉树t2，判断t2是否是t1的子树
     // 前序遍历结果相同的两棵树为同一棵树（只有一个子节点，需标记另一个空节点），
     public boolean isSonOfAnother(Node x) {
@@ -212,13 +269,14 @@ public class BinaryTree {
         Node n4=bt.putLeft(n3,7);
         Node n5=bt.putRight(n3,18);
         Node n6=bt.putLeft(n4,12);
+        Node n7=bt.putLeft(n2,1);
 
-        BinaryTree bt2=new BinaryTree(8);
-        Node n7=bt.putLeft(bt2.root,7);
-        Node n8=bt.putRight(bt2.root,18);
-        Node n9=bt.putLeft(n7,12);
-
-        System.out.println(bt2.isSonOfAnother(bt.root));
-
+        ArrayList<Stack<Node>> arr=bt.pathsEqualValue(8);
+        for(Stack<Node> s:arr) {
+            while(!s.empty()) {
+                System.out.print(s.pop().item+"->");
+            }
+            System.out.println();
+        }
     }
 }
