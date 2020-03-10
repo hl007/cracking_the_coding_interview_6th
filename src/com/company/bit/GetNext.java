@@ -85,7 +85,7 @@ public class GetNext {
         int mask=~(1<<i);
         return (num & mask) | (val<<i);
     }
-    
+
     public static void main(String[] args) {
         System.out.println(Integer.toBinaryString(1234554));
         System.out.println(Integer.toBinaryString(getPrev(1234554)));
