@@ -4,7 +4,6 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Set;
 
 // 返回一个集合的所有子集
 public class GetSubSet {
@@ -28,7 +27,7 @@ public class GetSubSet {
     public static void main(String[] args) {
         LinkedList<Integer> s=new LinkedList<>();
         s.add(3);
-        s.add(4);
+        s.add(3);
         s.add(5);
         s.add(6);
         ArrayList<LinkedList<Integer>> arr=getSubSet(s);
