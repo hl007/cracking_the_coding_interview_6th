@@ -8,12 +8,12 @@ import java.util.NoSuchElementException;
 // 二叉查找树，每个结点含有一个键值对，一个左子结点的引用，一个右子结点的引用，一个结点计数器
 // 每个结点的键大于左子树的所有结点而小于右子树的所有结点
 public class BST<Key extends Comparable<Key>,Value> implements OrderedSymbolTable<Key,Value> {
-    private Node root;
+    public Node root;
 
-    private class Node {
+    public class Node {
         private Key key;
         private Value val;
-        private Node left, right;
+        public Node left, right;
         private int size;
 
         public Node(Key key,Value val,int size) {
