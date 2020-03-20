@@ -11,8 +11,8 @@ public class BST<Key extends Comparable<Key>,Value> implements OrderedSymbolTabl
     public Node root;
 
     public class Node {
-        private Key key;
-        private Value val;
+        public Key key;
+        public Value val;
         public Node left, right;
         private int size;
 
