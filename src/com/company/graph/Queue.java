@@ -65,7 +65,22 @@ public class Queue<Item> implements Iterable<Item> {
         return first.item;
     }
 
+    public Item head() {
+        return first.item;
+    }
 
+    public Item tail() {
+        return last.item;
+    }
+
+    public boolean contains(Item item) {
+        for(Node x=first;x!=null;x=x.next){
+            if(x.item.equals(item)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public static void main(String[] args) {
         Queue<String> q = new Queue<>();

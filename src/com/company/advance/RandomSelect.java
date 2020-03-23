@@ -1,7 +1,5 @@
 package com.company.advance;
 
-import com.company.medium.Random7;
-
 import java.util.Arrays;
 import java.util.Random;
 

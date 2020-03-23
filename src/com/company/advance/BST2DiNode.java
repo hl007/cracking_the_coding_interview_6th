@@ -1,8 +1,6 @@
 package com.company.advance;
 
 import com.company.graph.BST;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 // 二叉搜索树转为双向链表：将节点的左子节点当作链表的前驱节点，右子节点当作链表的后继节点，要求值的顺序保存不变
