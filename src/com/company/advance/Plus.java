@@ -1,7 +1,5 @@
 package com.company.advance;
 
-import java.awt.*;
-
 // 将两个数相加，不用+和其他算术运算符
 public class Plus {
     public static int plus(int a,int b) {
